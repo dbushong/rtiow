@@ -2,7 +2,17 @@ require "./vec3"
 require "./ray"
 require "./color"
 
-def ray_color(r : Ray)
+def hit_sphere(center : Vec3, radius : Float64, r : Ray)
+  oc = r.origin - center
+  a = r.direction.dot(r.direction)
+  b = 2.0 * oc.dot(r.direction)
+  c = oc.dot(oc) - radius * radius
+  discriminant = b * b - 4 * a * c
+  discriminant > 0
+end
+
+def ray_color(r : Ray) : Color
+  return Color.new(1, 0, 0) if hit_sphere(Vec3.new(0, 0, -1), 0.5, r)
   unit_direction = r.direction.unit_vector
   t = 0.5 * (unit_direction.y + 1.0)
   Color.new(1.0, 1.0, 1.0) * (1 - t) + Color.new(0.5, 0.7, 1.0) * t
