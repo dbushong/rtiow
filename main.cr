@@ -4,14 +4,15 @@ require "./color"
 
 def hit_sphere(center : Vec3, radius : Float64, r : Ray)
   oc = r.origin - center
-  a = r.direction.dot(r.direction)
-  b = 2.0 * oc.dot(r.direction)
-  c = oc.dot(oc) - radius * radius
-  discriminant = b * b - 4 * a * c
+  a = r.direction.length_squared
+  half_b = oc.dot(r.direction)
+  c = oc.length_squared - radius * radius
+  discriminant = half_b * half_b - a * c
+
   if discriminant < 0
     -1.0
   else
-    (-b - Math.sqrt(discriminant)) / (2.0 * a)
+    (-half_b - Math.sqrt(discriminant)) / a
   end
 end
 
