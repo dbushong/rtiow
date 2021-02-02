@@ -1,4 +1,5 @@
 require "./vec3"
+require "./util"
 
 class Color < Vec3
   def r
@@ -13,7 +14,11 @@ class Color < Vec3
     z
   end
 
-  def to_s(io : IO)
-    io << (r * 255.999).to_i << ' ' << (g * 255.999).to_i << ' ' << (b * 255.999).to_i
+  def write_color(io : IO, samples_per_pixel : Int32)
+    scale = 1.0 / samples_per_pixel
+
+    io << (clamp(r * scale, 0.0, 0.999) * 256).to_i << ' ' \
+      << (clamp(g * scale, 0.0, 0.999) * 256).to_i << ' ' \
+        << (clamp(b * scale, 0.0, 0.999) * 256).to_i
   end
 end
