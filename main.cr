@@ -1,29 +1,15 @@
 require "./vec3"
 require "./ray"
 require "./color"
+require "./hittable_list"
+require "./sphere"
 
-def hit_sphere(center : Vec3, radius : Float64, r : Ray)
-  oc = r.origin - center
-  a = r.direction.length_squared
-  half_b = oc.dot(r.direction)
-  c = oc.length_squared - radius * radius
-  discriminant = half_b * half_b - a * c
-
-  if discriminant < 0
-    -1.0
-  else
-    (-half_b - Math.sqrt(discriminant)) / a
+def ray_color(r : Ray, world : Hittable) : Color
+  rec = world.hit(r, 0, Float64::INFINITY)
+  if rec
+    return (Color.new(1, 1, 1) + rec.normal) * 0.5
   end
-end
-
-def ray_color(r : Ray) : Color
-  t = hit_sphere(Vec3.new(0, 0, -1), 0.5, r)
-  if t > 0.0
-    n = (r.at(t) - Vec3.new(0, 0, -1)).unit_vector
-    return Color.new(n.x + 1, n.y + 1, n.z + 1) * 0.5
-  end
-  unit_direction = r.direction.unit_vector
-  t = 0.5 * (unit_direction.y + 1.0)
+  t = (r.direction.unit_vector.y + 1.0) * 0.5
   Color.new(1.0, 1.0, 1.0) * (1 - t) + Color.new(0.5, 0.7, 1.0) * t
 end
 
@@ -32,6 +18,11 @@ def main
   aspect_ratio = 16.0 / 9.0
   image_width = 400
   image_height = (image_width / aspect_ratio).to_i
+
+  # World
+  world = HittableList.new \
+    << Sphere.new(Vec3.new(0, 0, -1), 0.5) \
+      << Sphere.new(Vec3.new(0, -100.5, -1), 100.0)
 
   # Camera
   viewport_height = 2.0
@@ -53,7 +44,7 @@ def main
       u = i / (image_width - 1)
       v = j / (image_height - 1)
       r = Ray.new(origin, lower_left_corner + horizontal * u + vertical * v - origin)
-      STDOUT << ray_color(r) << '\n'
+      STDOUT << ray_color(r, world) << '\n'
     end
   end
 
