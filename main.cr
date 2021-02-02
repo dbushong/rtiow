@@ -8,11 +8,19 @@ def hit_sphere(center : Vec3, radius : Float64, r : Ray)
   b = 2.0 * oc.dot(r.direction)
   c = oc.dot(oc) - radius * radius
   discriminant = b * b - 4 * a * c
-  discriminant > 0
+  if discriminant < 0
+    -1.0
+  else
+    (-b - Math.sqrt(discriminant)) / (2.0 * a)
+  end
 end
 
 def ray_color(r : Ray) : Color
-  return Color.new(1, 0, 0) if hit_sphere(Vec3.new(0, 0, -1), 0.5, r)
+  t = hit_sphere(Vec3.new(0, 0, -1), 0.5, r)
+  if t > 0.0
+    n = (r.at(t) - Vec3.new(0, 0, -1)).unit_vector
+    return Color.new(n.x + 1, n.y + 1, n.z + 1) * 0.5
+  end
   unit_direction = r.direction.unit_vector
   t = 0.5 * (unit_direction.y + 1.0)
   Color.new(1.0, 1.0, 1.0) * (1 - t) + Color.new(0.5, 0.7, 1.0) * t
