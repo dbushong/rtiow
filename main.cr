@@ -12,12 +12,16 @@ def random_in_unit_sphere
   end
 end
 
+def random_unit_vector
+  random_in_unit_sphere.unit_vector
+end
+
 def ray_color(r : Ray, world : Hittable, depth : Int32) : Color
   return Color.new(0, 0, 0) if depth <= 0
 
   rec = world.hit(r, 0.001, Float64::INFINITY)
   if rec
-    target = rec.p + rec.normal + random_in_unit_sphere
+    target = rec.p + rec.normal + random_unit_vector
     return ray_color(Ray.new(rec.p, target - rec.p), world, depth - 1) * 0.5
   end
 
