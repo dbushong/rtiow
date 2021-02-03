@@ -24,7 +24,7 @@ end
 
 class Metal < Material
   def initialize(@albedo : Color, fuzz : Float64)
-    @fuzz = fuzz < 1.0 ? 1.0 : fuzz
+    @fuzz = fuzz < 1.0 ? fuzz : 1.0
   end
 
   def scatter(r_in : Ray, rec : HitRecord) : MaybeRayAndAttenuation
@@ -46,8 +46,16 @@ class Dielectric < Material
     refraction_ratio = rec.front_face? ? (1.0 / @ir) : @ir
 
     unit_direction = r_in.direction.unit_vector
-    refracted = unit_direction.refract(rec.normal, refraction_ratio)
+    cos_theta = Math.min((-unit_direction).dot(rec.normal), 1.0)
+    sin_theta = Math.sqrt(1.0 - cos_theta * cos_theta)
 
-    {ray: Ray.new(rec.p, refracted), attenuation: Color.new(1, 1, 1)}
+    cannot_refract = refraction_ratio * sin_theta > 1.0
+    direction = if cannot_refract
+                  unit_direction.reflect(rec.normal)
+                else
+                  unit_direction.refract(rec.normal, refraction_ratio)
+                end
+
+    {ray: Ray.new(rec.p, direction), attenuation: Color.new(1, 1, 1)}
   end
 end
