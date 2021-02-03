@@ -59,4 +59,12 @@ class Vec3
   def to_s(io : IO)
     io << x << ' ' << y << ' ' << z
   end
+
+  def self.random
+    self.new(Random.rand, Random.rand, Random.rand)
+  end
+
+  def self.random(min : Float64, max : Float64)
+    self.new(Random.rand(min..max), Random.rand(min..max), Random.rand(min..max))
+  end
 end

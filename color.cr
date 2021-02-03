@@ -17,8 +17,11 @@ class Color < Vec3
   def write_color(io : IO, samples_per_pixel : Int32)
     scale = 1.0 / samples_per_pixel
 
-    io << (clamp(r * scale, 0.0, 0.999) * 256).to_i << ' ' \
-      << (clamp(g * scale, 0.0, 0.999) * 256).to_i << ' ' \
-        << (clamp(b * scale, 0.0, 0.999) * 256).to_i
+    [r, g, b].each_with_index do |c, i|
+      io << ' ' if i > 0
+      io << (clamp(Math.sqrt(c * scale), 0.0, 0.999) * 256).to_i
+    end
+
+    io
   end
 end
