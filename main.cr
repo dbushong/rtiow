@@ -38,11 +38,12 @@ def main
   material_left = Dielectric.new(1.5)
   material_right = Metal.new(Color.new(0.8, 0.6, 0.2), 0.0)
 
-  world = HittableList.new \
-    << Sphere.new(Vec3.new(0, -100.5, -1), 100.0, material_ground) \
-      << Sphere.new(Vec3.new(0, 0, -1), 0.5, material_center) \
-        << Sphere.new(Vec3.new(-1, 0, -1), 0.5, material_left) \
-          << Sphere.new(Vec3.new(1, 0, -1), 0.5, material_right)
+  world = HittableList.new
+  world << Sphere.new(Vec3.new(0, -100.5, -1), 100.0, material_ground)
+  world << Sphere.new(Vec3.new(0, 0, -1), 0.5, material_center)
+  world << Sphere.new(Vec3.new(-1, 0, -1), 0.5, material_left)
+  world << Sphere.new(Vec3.new(-1, 0, -1), -0.4, material_left)
+  world << Sphere.new(Vec3.new(1, 0, -1), 0.5, material_right)
 
   # Camera
   cam = Camera.new

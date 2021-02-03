@@ -11,9 +11,9 @@ class Sphere < Hittable
     oc = r.origin - center
     a = r.direction.length_squared
     half_b = oc.dot(r.direction)
-    c = oc.length_squared - radius * radius
+    c = oc.length_squared - radius ** 2
 
-    discriminant = half_b * half_b - a * c
+    discriminant = half_b ** 2 - a * c
     return nil if discriminant < 0
     sqrtd = Math.sqrt discriminant
 

@@ -4,12 +4,6 @@ def degrees_to_radians(degrees : Float64)
   degrees * Math::PI / 180.0
 end
 
-def clamp(x : Float64, min : Float64, max : Float64)
-  return min if x < min
-  return max if x > max
-  x
-end
-
 def random_in_unit_sphere
   loop do
     p = Vec3.random(-1, 1)

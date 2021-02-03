@@ -19,7 +19,7 @@ class Color < Vec3
 
     [r, g, b].each_with_index do |c, i|
       io << ' ' if i > 0
-      io << (clamp(Math.sqrt(c * scale), 0.0, 0.999) * 256).to_i
+      io << (Math.sqrt(c * scale).clamp(0.0, 0.999) * 256).to_i
     end
 
     io

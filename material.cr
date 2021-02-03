@@ -47,15 +47,21 @@ class Dielectric < Material
 
     unit_direction = r_in.direction.unit_vector
     cos_theta = Math.min((-unit_direction).dot(rec.normal), 1.0)
-    sin_theta = Math.sqrt(1.0 - cos_theta * cos_theta)
+    sin_theta = Math.sqrt(1.0 - cos_theta ** 2)
 
     cannot_refract = refraction_ratio * sin_theta > 1.0
-    direction = if cannot_refract
+    direction = if cannot_refract || reflectance(cos_theta, refraction_ratio) > Random.rand
                   unit_direction.reflect(rec.normal)
                 else
                   unit_direction.refract(rec.normal, refraction_ratio)
                 end
 
     {ray: Ray.new(rec.p, direction), attenuation: Color.new(1, 1, 1)}
+  end
+
+  private def reflectance(cosine : Float64, ref_idx : Float64)
+    # Use Schlick's approximation for reflectance
+    r0 = ((1 - ref_idx) / (1 + ref_idx)) ** 2
+    r0 + (1 - r0) * (1 - cosine) ** 5
   end
 end
