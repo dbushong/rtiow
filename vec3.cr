@@ -44,6 +44,10 @@ class Vec3
     )
   end
 
+  def reflect(v : Vec3)
+    self - v * self.dot(v) * 2.0
+  end
+
   def length_squared
     x*x + y*y + z*z
   end
@@ -58,6 +62,11 @@ class Vec3
 
   def to_s(io : IO)
     io << x << ' ' << y << ' ' << z
+  end
+
+  def near_zero?
+    s = 1.0e-8
+    x.abs < s && y.abs < s && z.abs < s
   end
 
   def self.random

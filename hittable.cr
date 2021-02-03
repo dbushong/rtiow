@@ -2,11 +2,17 @@ require "./vec3"
 require "./ray"
 
 class HitRecord
-  getter p, normal, t, front_face : Bool
+  getter p, normal, t, object
 
-  def initialize(@p : Vec3, @t : Float64, r : Ray, outward_normal : Vec3)
+  @front_face : Bool
+
+  def initialize(@object : Hittable, @p : Vec3, @t : Float64, r : Ray, outward_normal : Vec3)
     @front_face = r.direction.dot(outward_normal) < 0
-    @normal = front_face ? outward_normal : -outward_normal
+    @normal = @front_face ? outward_normal : -outward_normal
+  end
+
+  def front_face?
+    @front_face
   end
 end
 

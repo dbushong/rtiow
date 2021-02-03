@@ -2,9 +2,9 @@ require "./ray"
 require "./hittable"
 
 class Sphere < Hittable
-  property center, radius
+  getter center, radius, material
 
-  def initialize(@center : Vec3, @radius : Float64)
+  def initialize(@center : Vec3, @radius : Float64, @material : Material)
   end
 
   def hit(r : Ray, t_min : Float64, t_max : Float64) : HitRecord | Nil
@@ -25,6 +25,6 @@ class Sphere < Hittable
     end
 
     p = r.at(root)
-    HitRecord.new(p, root, r, (p - center) / radius)
+    HitRecord.new(self, p, root, r, (p - center) / radius)
   end
 end

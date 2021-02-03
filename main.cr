@@ -4,30 +4,20 @@ require "./color"
 require "./hittable_list"
 require "./sphere"
 require "./camera"
-
-def random_in_unit_sphere
-  loop do
-    p = Vec3.random(-1, 1)
-    return p if p.length_squared < 1
-  end
-end
-
-def random_unit_vector
-  random_in_unit_sphere.unit_vector
-end
-
-def random_in_hemisphere(normal : Vec3)
-  in_unit_sphere = random_in_unit_sphere
-  in_unit_sphere.dot(normal) > 0.0 ? in_unit_sphere : -in_unit_sphere
-end
+require "./util"
+require "./material"
 
 def ray_color(r : Ray, world : Hittable, depth : Int32) : Color
   return Color.new(0, 0, 0) if depth <= 0
 
   rec = world.hit(r, 0.001, Float64::INFINITY)
   if rec
-    target = rec.p + random_in_hemisphere(rec.normal)
-    return ray_color(Ray.new(rec.p, target - rec.p), world, depth - 1) * 0.5
+    scatter_res = rec.object.material.scatter(r, rec)
+    if scatter_res
+      return ray_color(scatter_res[:ray], world, depth - 1) * scatter_res[:attenuation]
+    else
+      return Color.new(0, 0, 0)
+    end
   end
 
   t = (r.direction.unit_vector.y + 1.0) * 0.5
@@ -43,9 +33,16 @@ def main
   max_depth = 50
 
   # World
+  material_ground = Lambertian.new(Color.new(0.8, 0.8, 0.0))
+  material_center = Lambertian.new(Color.new(0.7, 0.3, 0.3))
+  material_left = Metal.new(Color.new(0.8, 0.8, 0.8))
+  material_right = Metal.new(Color.new(0.8, 0.6, 0.2))
+
   world = HittableList.new \
-    << Sphere.new(Vec3.new(0, 0, -1), 0.5) \
-      << Sphere.new(Vec3.new(0, -100.5, -1), 100.0)
+    << Sphere.new(Vec3.new(0, -100.5, -1), 100.0, material_ground) \
+      << Sphere.new(Vec3.new(0, 0, -1), 0.5, material_center) \
+        << Sphere.new(Vec3.new(-1, 0, -1), 0.5, material_left) \
+          << Sphere.new(Vec3.new(1, 0, -1), 0.5, material_right)
 
   # Camera
   cam = Camera.new
