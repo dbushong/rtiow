@@ -69,6 +69,13 @@ class Vec3
     x.abs < s && y.abs < s && z.abs < s
   end
 
+  def refract(v : Vec3, etai_over_etat : Float64)
+    cos_theta = Math.min(self.dot(-v), 1.0)
+    r_out_perp = (self + v * cos_theta) * etai_over_etat
+    r_out_parallel = -v * Math.sqrt((1.0 - r_out_perp.length_squared).abs)
+    r_out_perp + r_out_parallel
+  end
+
   def self.random
     self.new(Random.rand, Random.rand, Random.rand)
   end

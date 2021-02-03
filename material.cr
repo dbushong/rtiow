@@ -23,16 +23,31 @@ class Lambertian < Material
 end
 
 class Metal < Material
-  def initialize(@albedo : Color)
+  def initialize(@albedo : Color, fuzz : Float64)
+    @fuzz = fuzz < 1.0 ? 1.0 : fuzz
   end
 
   def scatter(r_in : Ray, rec : HitRecord) : MaybeRayAndAttenuation
     reflected = r_in.direction.unit_vector.reflect rec.normal
-    scattered = Ray.new(rec.p, reflected)
+    scattered = Ray.new(rec.p, reflected + random_in_unit_sphere * @fuzz)
     if scattered.direction.dot(rec.normal) > 0
       {ray: scattered, attenuation: @albedo}
     else
       nil
     end
+  end
+end
+
+class Dielectric < Material
+  def initialize(@ir : Float64)
+  end
+
+  def scatter(r_in : Ray, rec : HitRecord) : MaybeRayAndAttenuation
+    refraction_ratio = rec.front_face? ? (1.0 / @ir) : @ir
+
+    unit_direction = r_in.direction.unit_vector
+    refracted = unit_direction.refract(rec.normal, refraction_ratio)
+
+    {ray: Ray.new(rec.p, refracted), attenuation: Color.new(1, 1, 1)}
   end
 end
