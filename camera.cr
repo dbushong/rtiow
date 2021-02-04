@@ -1,12 +1,15 @@
 require "./ray"
+require "./util"
 
 class Camera
   @lower_left_corner : Vec3
 
-  def initialize
-    aspect_ratio = 16.0 / 9.0
-    viewport_height = 2.0
+  def initialize(vfov : Float64, aspect_ratio : Float64)
+    theta = degrees_to_radians(vfov)
+    h = Math.tan(theta / 2)
+    viewport_height = 2.0 * h
     viewport_width = aspect_ratio * viewport_height
+
     focal_length = 1.0
 
     @origin = Vec3.new(0, 0, 0)

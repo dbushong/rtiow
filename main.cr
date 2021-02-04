@@ -7,6 +7,8 @@ require "./camera"
 require "./util"
 require "./material"
 
+R = Math.cos(Math::PI / 4.0)
+
 def ray_color(r : Ray, world : Hittable, depth : Int32) : Color
   return Color.new(0, 0, 0) if depth <= 0
 
@@ -33,20 +35,15 @@ def main
   max_depth = 50
 
   # World
-  material_ground = Lambertian.new(Color.new(0.8, 0.8, 0.0))
-  material_center = Lambertian.new(Color.new(0.1, 0.2, 0.5))
-  material_left = Dielectric.new(1.5)
-  material_right = Metal.new(Color.new(0.8, 0.6, 0.2), 0.0)
+  material_left = Lambertian.new(Color.new(0, 0, 1))
+  material_right = Lambertian.new(Color.new(1, 0, 0))
 
   world = HittableList.new
-  world << Sphere.new(Vec3.new(0, -100.5, -1), 100.0, material_ground)
-  world << Sphere.new(Vec3.new(0, 0, -1), 0.5, material_center)
-  world << Sphere.new(Vec3.new(-1, 0, -1), 0.5, material_left)
-  world << Sphere.new(Vec3.new(-1, 0, -1), -0.4, material_left)
-  world << Sphere.new(Vec3.new(1, 0, -1), 0.5, material_right)
+  world << Sphere.new(Vec3.new(-R, 0, -1), R, material_left)
+  world << Sphere.new(Vec3.new(R, 0, -1), R, material_right)
 
   # Camera
-  cam = Camera.new
+  cam = Camera.new(90, aspect_ratio)
 
   # Render
   STDOUT << "P3\n" << image_width << ' ' << image_height << "\n255\n"
