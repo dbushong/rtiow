@@ -48,12 +48,14 @@ def main
   world << Sphere.new(Vec3.new(1.0, 0.0, -1.0), 0.5, material_right)
 
   # Camera
+  look_from = Vec3.new(3, 3, 2)
+  look_at = Vec3.new(0, 0, -1)
+  vup = Vec3.new(0, 1, 0)
+  dist_to_focus = (look_from - look_at).length
+  aperture = 2.0
+
   cam = Camera.new(
-    Vec3.new(-2, 2, 1),
-    Vec3.new(0, 0, -1),
-    Vec3.new(0, 1, 0),
-    20,
-    aspect_ratio
+    look_from, look_at, vup, 20, aspect_ratio, aperture, dist_to_focus
   )
 
   # Render
