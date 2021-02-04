@@ -1,6 +1,5 @@
 require "./hittable_list"
 require "./material"
-require "./color"
 require "./sphere"
 require "./vec3"
 

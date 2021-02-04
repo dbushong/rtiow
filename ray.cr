@@ -1,6 +1,6 @@
 require "./vec3"
 
-class Ray
+struct Ray
   property origin, direction
 
   def initialize(@origin : Vec3, @direction : Vec3)

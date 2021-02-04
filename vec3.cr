@@ -1,4 +1,4 @@
-class Vec3
+struct Vec3
   property x, y, z
 
   def initialize(@x : Float64, @y : Float64, @z : Float64)
@@ -76,6 +76,17 @@ class Vec3
     x.abs < s && y.abs < s && z.abs < s
   end
 
+  def write_as_color(io : IO, samples_per_pixel : Int32)
+    scale = 1.0 / samples_per_pixel
+
+    [x, y, z].each_with_index do |c, i|
+      io << ' ' if i > 0
+      io << (Math.sqrt(c * scale).clamp(0.0, 0.999) * 256).to_i
+    end
+
+    io
+  end
+
   def self.random
     self.new(Random.rand, Random.rand, Random.rand)
   end
@@ -84,3 +95,5 @@ class Vec3
     self.new(Random.rand(min..max), Random.rand(min..max), Random.rand(min..max))
   end
 end
+
+alias Color = Vec3

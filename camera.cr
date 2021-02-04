@@ -1,7 +1,7 @@
 require "./ray"
 require "./util"
 
-class Camera
+struct Camera
   @origin : Vec3
   @horizontal : Vec3
   @vertical : Vec3

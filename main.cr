@@ -1,6 +1,5 @@
 require "./vec3"
 require "./ray"
-require "./color"
 require "./hittable_list"
 require "./sphere"
 require "./camera"
@@ -32,7 +31,7 @@ def main
   aspect_ratio = 16.0 / 9.0
   image_width = 1200
   image_height = (image_width / aspect_ratio).to_i
-  samples_per_pixel = 10
+  samples_per_pixel = 500
   max_depth = 50
 
   # World
@@ -63,7 +62,7 @@ def main
         r = cam.ray(u, v)
         pixel_color += ray_color(r, world, max_depth)
       end
-      pixel_color.write_color(STDOUT, samples_per_pixel) << '\n'
+      pixel_color.write_as_color(STDOUT, samples_per_pixel) << '\n'
     end
   end
 

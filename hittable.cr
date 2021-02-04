@@ -1,7 +1,7 @@
 require "./vec3"
 require "./ray"
 
-class HitRecord
+struct HitRecord
   getter p, normal, t, object
 
   @front_face : Bool

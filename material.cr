@@ -1,14 +1,13 @@
 require "./ray"
 require "./util"
-require "./color"
 
 alias MaybeRayAndAttenuation = {ray: Ray, attenuation: Color} | Nil
 
-abstract class Material
+abstract struct Material
   abstract def scatter(r_in : Ray, rec : HitRecord) : MaybeRayAndAttenuation
 end
 
-class Lambertian < Material
+struct Lambertian < Material
   def initialize(@albedo : Color)
   end
 
@@ -22,7 +21,7 @@ class Lambertian < Material
   end
 end
 
-class Metal < Material
+struct Metal < Material
   def initialize(@albedo : Color, fuzz : Float64)
     @fuzz = fuzz < 1.0 ? fuzz : 1.0
   end
@@ -38,7 +37,7 @@ class Metal < Material
   end
 end
 
-class Dielectric < Material
+struct Dielectric < Material
   def initialize(@ir : Float64)
   end
 
