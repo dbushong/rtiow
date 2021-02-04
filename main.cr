@@ -29,10 +29,10 @@ end
 
 def main
   # Image
-  aspect_ratio = 3.0 / 2.0
+  aspect_ratio = 16.0 / 9.0
   image_width = 1200
   image_height = (image_width / aspect_ratio).to_i
-  samples_per_pixel = 500
+  samples_per_pixel = 10
   max_depth = 50
 
   # World
