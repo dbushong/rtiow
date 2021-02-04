@@ -6,6 +6,7 @@ require "./sphere"
 require "./camera"
 require "./util"
 require "./material"
+require "./cover_scene"
 
 R = Math.cos(Math::PI / 4.0)
 
@@ -28,31 +29,22 @@ end
 
 def main
   # Image
-  aspect_ratio = 16.0 / 9.0
-  image_width = 400
+  aspect_ratio = 3.0 / 2.0
+  image_width = 1200
   image_height = (image_width / aspect_ratio).to_i
-  samples_per_pixel = 100
+  samples_per_pixel = 500
   max_depth = 50
 
   # World
-  material_ground = Lambertian.new(Color.new(0.8, 0.8, 0.0))
-  material_center = Lambertian.new(Color.new(0.1, 0.2, 0.5))
-  material_left = Dielectric.new(1.5)
-  material_right = Metal.new(Color.new(0.8, 0.6, 0.2), 0.0)
-
   world = HittableList.new
-  world << Sphere.new(Vec3.new(0, -100.5, -1), 100, material_ground)
-  world << Sphere.new(Vec3.new(0.0, 0.0, -1.0), 0.5, material_center)
-  world << Sphere.new(Vec3.new(-1.0, 0.0, -1.0), 0.5, material_left)
-  world << Sphere.new(Vec3.new(-1.0, 0.0, -1.0), -0.45, material_left)
-  world << Sphere.new(Vec3.new(1.0, 0.0, -1.0), 0.5, material_right)
+  cover_scene world
 
   # Camera
-  look_from = Vec3.new(3, 3, 2)
-  look_at = Vec3.new(0, 0, -1)
+  look_from = Vec3.new(13, 2, 3)
+  look_at = Vec3.new(0, 0, 0)
   vup = Vec3.new(0, 1, 0)
-  dist_to_focus = (look_from - look_at).length
-  aperture = 2.0
+  dist_to_focus = 10.0
+  aperture = 0.1
 
   cam = Camera.new(
     look_from, look_at, vup, 20, aspect_ratio, aperture, dist_to_focus
