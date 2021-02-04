@@ -5,6 +5,8 @@ this excellent book:
 
 https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
+![render](out.jpg)
+
 ## TODO
 
 - [x] Build naïve functionality, writing things basically in rubyish Crystal
