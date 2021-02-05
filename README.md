@@ -9,6 +9,11 @@ https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
 ![render](out.jpg)
 
+## Git Branches
+
+- `master` - the latest whatever I'm working on
+- `in-one-weekend` - the code as of the end of the first book
+
 ## Building & Running
 
 ```
