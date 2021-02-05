@@ -36,6 +36,13 @@ seems pretty zippy. The compiler errors are very helpful and clear.
 Update: performance is amazing, particularly for how high-level the code
 writing can be
 
+Mac tip:
+
+```
+$ crystal run --release src/main.cr -- -w 75 -h 75 -s 10 > out.ppm \
+  && qlmanage -p out.ppm >/dev/null 2>&1
+```
+
 ## Performance
 
 All times are for rendering the cover graphic:
