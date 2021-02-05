@@ -14,7 +14,7 @@ https://raytracing.github.io/books/RayTracingInOneWeekend.html
 ```
 $ cd rtiow
 $ shards build --release
-$ ./bin/inOneWeekend > out.ppm
+$ ./bin/inOneWeekend --help
 ```
 
 ## Tasks
@@ -22,6 +22,7 @@ $ ./bin/inOneWeekend > out.ppm
 - [x] Build naïve functionality, writing things basically in rubyish Crystal
 - [x] Do some of the tips from the Crystal "Performance" page
 - [x] Reorganize as a well-structured crystal app repo
+- [x] Add options processing for render parameters (and scenes?)
 - [ ] Port "Raytracing: The Next Week"
 - [ ] Add tests
 - [ ] Add forking(?) parallelism to use more threads for parallel scanlines
