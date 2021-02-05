@@ -18,7 +18,9 @@ struct Camera
     vfov : Float64, # vertical field-of-view in degrees
     aspect_ratio : Float64,
     aperture : Float64,
-    focus_dist : Float64
+    focus_dist : Float64,
+    @time0 : Float64 = 0,
+    @time1 : Float64 = 0
   )
     theta = degrees_to_radians(vfov)
     h = Math.tan(theta / 2)
@@ -45,7 +47,8 @@ struct Camera
 
     Ray.new(
       @origin + offset,
-      @lower_left_corner + @horizontal * s + @vertical * t - @origin - offset
+      @lower_left_corner + @horizontal * s + @vertical * t - @origin - offset,
+      Random.rand @time0..@time1
     )
   end
 end
