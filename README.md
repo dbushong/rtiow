@@ -5,13 +5,16 @@ this excellent book:
 
 https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
+(version 3.2.3)
+
 ![render](out.jpg)
 
-## TODO
+## Tasks
 
 - [x] Build naïve functionality, writing things basically in rubyish Crystal
 - [x] Do some of the tips from the Crystal "Performance" page
 - [ ] Reorganize as a well-structured crystal app repo
+- [ ] Port "Raytracing: The Next Week"
 - [ ] Add forking(?) parallelism to use more threads for parallel scanlines
 
 ## Notes
