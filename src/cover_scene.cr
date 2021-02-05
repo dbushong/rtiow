@@ -1,6 +1,7 @@
 require "./hittable_list"
 require "./material"
 require "./sphere"
+require "./moving_sphere"
 require "./vec3"
 
 def cover_scene(world : HittableList)
@@ -17,7 +18,10 @@ def cover_scene(world : HittableList)
           # diffuse
           albedo = Color.random * Color.random
           sphere_material = Lambertian.new(albedo)
-          world << Sphere.new(center, 0.2, sphere_material)
+          center2 = center + Vec3.new(0, Random.rand(0.0..0.5), 0)
+          world << MovingSphere.new(
+            center, center2, 0.0, 1.0, 0.2, sphere_material
+          )
         elsif choose_mat < 0.95
           # metal
           albedo = Color.random(0.5, 1)

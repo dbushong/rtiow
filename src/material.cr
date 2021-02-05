@@ -17,7 +17,7 @@ struct Lambertian < Material
     # Catch degenerate scatter direction
     scatter_direction = rec.normal if scatter_direction.near_zero?
 
-    {ray: Ray.new(rec.p, scatter_direction), attenuation: @albedo}
+    {ray: Ray.new(rec.p, scatter_direction, r_in.tm), attenuation: @albedo}
   end
 end
 
@@ -28,7 +28,9 @@ struct Metal < Material
 
   def scatter(r_in : Ray, rec : HitRecord) : MaybeRayAndAttenuation
     reflected = r_in.direction.unit_vector.reflect rec.normal
-    scattered = Ray.new(rec.p, reflected + random_in_unit_sphere * @fuzz)
+    scattered = Ray.new(
+      rec.p, reflected + random_in_unit_sphere * @fuzz, r_in.tm
+    )
     if scattered.direction.dot(rec.normal) > 0
       {ray: scattered, attenuation: @albedo}
     else
@@ -55,7 +57,7 @@ struct Dielectric < Material
                   unit_direction.refract(rec.normal, refraction_ratio)
                 end
 
-    {ray: Ray.new(rec.p, direction), attenuation: Color.new(1, 1, 1)}
+    {ray: Ray.new(rec.p, direction, r_in.tm), attenuation: Color.new(1, 1, 1)}
   end
 
   private def reflectance(cosine : Float64, ref_idx : Float64)

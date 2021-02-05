@@ -42,7 +42,7 @@ def render(image_width, image_height, samples_per_pixel, max_depth)
   aperture = 0.1
 
   cam = Camera.new(
-    look_from, look_at, vup, 20, aspect_ratio, aperture, dist_to_focus
+    look_from, look_at, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0
   )
 
   # Render
