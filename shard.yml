@@ -1,0 +1,13 @@
+name: rtiow
+version: 3.2.3
+
+authors:
+  - David Bushong <david@bushong.net>
+
+targets:
+  inOneWeekend:
+    main: src/main.cr
+
+crystal: 0.35.1
+
+license: MIT

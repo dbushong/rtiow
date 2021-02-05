@@ -1,3 +1,6 @@
-*.ppm
-inOneWeekend
+/docs/
+/lib/
+/bin/
+/.shards/
 *.dwarf
+*.ppm
