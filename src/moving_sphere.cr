@@ -19,7 +19,7 @@ class MovingSphere < Hittable
     @center0 + (@center1 - @center0) * ((t - @time0) / (@time1 - @time0))
   end
 
-  def hit(r : Ray, t_min : Float64, t_max : Float64) : HitRecord | Nil
+  def hit(r : Ray, t_min : Float64, t_max : Float64) : HitRecord?
     oc = r.origin - center(r.tm)
     a = r.direction.length_squared
     half_b = oc.dot(r.direction)

@@ -3,10 +3,12 @@ require "./material"
 require "./sphere"
 require "./moving_sphere"
 require "./vec3"
+require "./texture"
 
 def cover_scene(world : HittableList)
-  ground_material = Lambertian.new(Color.new(0.5, 0.5, 0.5))
-  world << Sphere.new(Vec3.new(0, -1000, 0), 1000, ground_material)
+  checker = Checker.new(Color.new(0.2, 0.3, 0.1), Color.new(0.9, 0.9, 0.9))
+
+  world << Sphere.new(Vec3.new(0, -1000, 0), 1000, Lambertian.new(checker))
 
   -11.upto(10) do |a|
     -11.upto(10) do |b|

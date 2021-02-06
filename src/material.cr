@@ -1,14 +1,20 @@
 require "./ray"
 require "./util"
+require "./vec3"
+require "./texture"
 
-alias MaybeRayAndAttenuation = {ray: Ray, attenuation: Color} | Nil
+alias MaybeRayAndAttenuation = {ray: Ray, attenuation: Color}?
 
 abstract struct Material
   abstract def scatter(r_in : Ray, rec : HitRecord) : MaybeRayAndAttenuation
 end
 
 struct Lambertian < Material
-  def initialize(@albedo : Color)
+  def initialize(@albedo : Texture)
+  end
+
+  def initialize(albedo : Color)
+    @albedo = SolidColor.new(albedo)
   end
 
   def scatter(r_in : Ray, rec : HitRecord) : MaybeRayAndAttenuation
@@ -17,7 +23,10 @@ struct Lambertian < Material
     # Catch degenerate scatter direction
     scatter_direction = rec.normal if scatter_direction.near_zero?
 
-    {ray: Ray.new(rec.p, scatter_direction, r_in.tm), attenuation: @albedo}
+    {
+      ray:         Ray.new(rec.p, scatter_direction, r_in.tm),
+      attenuation: @albedo.value(rec.u, rec.v, rec.p),
+    }
   end
 end
 

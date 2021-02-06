@@ -15,9 +15,9 @@ class HittableList < Hittable
     @objects.clear
   end
 
-  def hit(r : Ray, t_min : Float64, t_max : Float64) : HitRecord | Nil
+  def hit(r : Ray, t_min : Float64, t_max : Float64) : HitRecord?
     closest_so_far = t_max
-    rec = nil : HitRecord | Nil
+    rec = nil : HitRecord?
 
     @objects.each do |object|
       temp_rec = object.hit(r, t_min, closest_so_far)
