@@ -48,7 +48,7 @@ struct Camera
     Ray.new(
       @origin + offset,
       @lower_left_corner + @horizontal * s + @vertical * t - @origin - offset,
-      Random.rand @time0..@time1
+      rand @time0..@time1
     )
   end
 end

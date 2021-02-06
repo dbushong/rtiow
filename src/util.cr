@@ -22,7 +22,7 @@ end
 
 def random_in_unit_disc
   loop do
-    p = Vec3.new(Random.rand(-1.0..1.0), Random.rand(-1.0..1.0), 0)
+    p = Vec3.new(rand(-1.0..1.0), rand(-1.0..1.0), 0)
     return p if p.length_squared < 1
   end
 end

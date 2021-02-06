@@ -1,5 +1,6 @@
 require "./vec3"
 require "./ray"
+require "./aabb"
 
 struct HitRecord
   getter p, normal, t, object
@@ -18,4 +19,5 @@ end
 
 abstract class Hittable
   abstract def hit(r : Ray, t_min : Float64, t_max : Float64) : HitRecord | Nil
+  abstract def bounding_box(time0 : Float64, time1 : Float64) : AaBb | Nil
 end

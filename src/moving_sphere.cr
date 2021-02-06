@@ -1,5 +1,6 @@
 require "./hittable"
 require "./material"
+require "./aabb"
 
 class MovingSphere < Hittable
   getter material
@@ -37,5 +38,12 @@ class MovingSphere < Hittable
 
     p = r.at(root)
     HitRecord.new(self, p, root, r, (p - center(r.tm)) / @radius)
+  end
+
+  def bounding_box(time0, time1) : AaBb
+    rv = Vec3.new(@radius, @radius, @radius)
+    c0 = center time0
+    c1 = center time1
+    AaBb.new(c0 - rv, c0 + rv).surrounding_box AaBb.new(c1 - rv, c1 + rv)
   end
 end

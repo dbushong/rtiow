@@ -10,22 +10,22 @@ def cover_scene(world : HittableList)
 
   -11.upto(10) do |a|
     -11.upto(10) do |b|
-      choose_mat = Random.rand
-      center = Vec3.new(a + 0.9 * Random.rand, 0.2, b + 0.9 * Random.rand)
+      choose_mat = rand
+      center = Vec3.new(a + 0.9 * rand, 0.2, b + 0.9 * rand)
 
       if (center - Vec3.new(4, 0.2, 0)).length > 0.9
         if choose_mat < 0.8
           # diffuse
           albedo = Color.random * Color.random
           sphere_material = Lambertian.new(albedo)
-          center2 = center + Vec3.new(0, Random.rand(0.0..0.5), 0)
+          center2 = center + Vec3.new(0, rand(0.0..0.5), 0)
           world << MovingSphere.new(
             center, center2, 0.0, 1.0, 0.2, sphere_material
           )
         elsif choose_mat < 0.95
           # metal
           albedo = Color.random(0.5, 1)
-          fuzz = Random.rand(0.0..0.5)
+          fuzz = rand(0.0..0.5)
           sphere_material = Metal.new(albedo, fuzz)
           world << Sphere.new(center, 0.2, sphere_material)
         else

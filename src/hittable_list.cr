@@ -1,4 +1,5 @@
 require "./hittable"
+require "./aabb"
 
 class HittableList < Hittable
   def initialize
@@ -31,5 +32,13 @@ class HittableList < Hittable
 
   def material
     raise "Should never be checking material of list"
+  end
+
+  def bounding_box(time0, time1) : AaBb?
+    @objects.reduce(nil : AaBb?) do |acc, object|
+      tmp = object.bounding_box(time0, time1)
+      return nil unless tmp
+      acc ? acc.surrounding_box(tmp) : tmp
+    end
   end
 end

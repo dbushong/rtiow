@@ -27,4 +27,9 @@ class Sphere < Hittable
     p = r.at(root)
     HitRecord.new(self, p, root, r, (p - center) / radius)
   end
+
+  def bounding_box(time0 : Float64, time1 : Float64) : AaBb?
+    rv = Vec3.new(radius, radius, radius)
+    AaBb.new(center - rv, center + rv)
+  end
 end

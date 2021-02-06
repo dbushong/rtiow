@@ -53,8 +53,8 @@ def render(image_width, image_height, samples_per_pixel, max_depth)
     0.upto(image_width - 1) do |i|
       pixel_color = Color.new(0, 0, 0)
       samples_per_pixel.times do
-        u = (i + Random.rand) / (image_width - 1)
-        v = (j + Random.rand) / (image_height - 1)
+        u = (i + rand) / (image_width - 1)
+        v = (j + rand) / (image_height - 1)
         r = cam.ray(u, v)
         pixel_color += ray_color(r, world, max_depth)
       end

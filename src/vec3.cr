@@ -87,12 +87,22 @@ struct Vec3
     io
   end
 
+  def [](i : Int)
+    case i
+    when 0 then x
+    when 1 then y
+    when 2 then z
+    else
+      raise IndexError.new("invalid Vec3 index: #{i}")
+    end
+  end
+
   def self.random
-    self.new(Random.rand, Random.rand, Random.rand)
+    self.new(rand, rand, rand)
   end
 
   def self.random(min : Float64, max : Float64)
-    self.new(Random.rand(min..max), Random.rand(min..max), Random.rand(min..max))
+    self.new(rand(min..max), rand(min..max), rand(min..max))
   end
 end
 

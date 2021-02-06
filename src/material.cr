@@ -51,7 +51,7 @@ struct Dielectric < Material
     sin_theta = Math.sqrt(1.0 - cos_theta ** 2)
 
     cannot_refract = refraction_ratio * sin_theta > 1.0
-    direction = if cannot_refract || reflectance(cos_theta, refraction_ratio) > Random.rand
+    direction = if cannot_refract || reflectance(cos_theta, refraction_ratio) > rand
                   unit_direction.reflect(rec.normal)
                 else
                   unit_direction.refract(rec.normal, refraction_ratio)
