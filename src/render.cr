@@ -5,7 +5,7 @@ require "./sphere"
 require "./camera"
 require "./util"
 require "./material"
-require "./cover_scene"
+require "./scene"
 
 R = Math.cos(Math::PI / 4.0)
 
@@ -26,23 +26,37 @@ def ray_color(r : Ray, world : Hittable, depth : Int32) : Color
   Color.new(1.0, 1.0, 1.0) * (1 - t) + Color.new(0.5, 0.7, 1.0) * t
 end
 
-def render(image_width, image_height, samples_per_pixel, max_depth)
+ValidSceneNames = ["cover", "two-spheres"]
+
+def render(image_width, image_height, samples_per_pixel, max_depth, scene_name)
   # Image
   aspect_ratio = image_width.to_f / image_height
 
-  # World
+  # World + Scene
   world = HittableList.new
-  cover_scene world
+  scene : Scene = case scene_name
+  when "cover"       then CoverScene.new
+  when "two-spheres" then TwoSpheresScene.new
+  else
+    raise ArgumentError.new("Unknown scene: #{scene_name}; must be one of: #{ValidSceneNames.inspect}")
+  end
+
+  scene.render_to(world)
 
   # Camera
-  look_from = Vec3.new(13, 2, 3)
-  look_at = Vec3.new(0, 0, 0)
   vup = Vec3.new(0, 1, 0)
   dist_to_focus = 10.0
-  aperture = 0.1
 
   cam = Camera.new(
-    look_from, look_at, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0
+    look_from: scene.look_from,
+    look_at: scene.look_at,
+    vup: vup,
+    vfov: scene.vfov,
+    aspect_ratio: aspect_ratio,
+    aperture: scene.aperture,
+    focus_dist: dist_to_focus,
+    time0: 0.0,
+    time1: 1.0
   )
 
   # Render

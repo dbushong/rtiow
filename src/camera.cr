@@ -12,6 +12,7 @@ struct Camera
   @w : Vec3
 
   def initialize(
+    *,
     look_from : Vec3,
     look_at : Vec3,
     vup : Vec3,
