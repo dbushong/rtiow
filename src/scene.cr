@@ -8,6 +8,8 @@ require "./texture"
 abstract class Scene
   getter look_from, look_at, vfov, aperture
 
+  @@klasses = {} of String => Scene.class
+
   def initialize
     @look_from = Vec3.new(0, 0, 0)
     @look_at = Vec3.new(0, 0, 0)
@@ -16,6 +18,18 @@ abstract class Scene
   end
 
   abstract def render_to(world : HittableList)
+
+  def self.register(name : String, klass : Scene.class)
+    @@klasses[name] = klass
+  end
+
+  def self.create(name : String) : Scene
+    klass = @@klasses[name]?
+    unless klass
+      raise ArgumentError.new("Unknown scene: #{name}; must be one of: #{@@klasses.keys.inspect}")
+    end
+    klass.new
+  end
 end
 
 class CoverScene < Scene
@@ -71,7 +85,9 @@ class CoverScene < Scene
   end
 end
 
-class TwoSpheresScene < Scene
+Scene.register "cover", CoverScene
+
+class TwoSpheres < Scene
   def initialize
     super
     @look_from = Vec3.new(13, 2, 3)
@@ -88,3 +104,22 @@ class TwoSpheresScene < Scene
     world << Sphere.new(Vec3.new(0, 10, 0), 10, Lambertian.new(checker))
   end
 end
+
+Scene.register "two-spheres", TwoSpheres
+
+class TwoPerlinSpheres < Scene
+  def initialize
+    super
+    @look_from = Vec3.new(13, 2, 3)
+    @look_at = Vec3.new(0, 0, 0)
+    @vfov = 20.0
+  end
+
+  def render_to(world)
+    per_text = Noise.new
+    world << Sphere.new(Vec3.new(0, -1000, 0), 1000, Lambertian.new(per_text))
+    world << Sphere.new(Vec3.new(0, 2, 0), 2, Lambertian.new(per_text))
+  end
+end
+
+Scene.register "two-perlin-spheres", TwoPerlinSpheres

@@ -1,4 +1,5 @@
 require "./vec3"
+require "./perlin"
 
 abstract class Texture
   abstract def value(u : Float64, v : Float64, p : Vec3) : Color
@@ -25,5 +26,15 @@ class Checker < Texture
   def value(u, v, p) : Color
     sines = Math.sin(10 * p.x) * Math.sin(10 * p.y) * Math.sin(10 * p.z)
     (sines < 0 ? @odd : @even).value(u, v, p)
+  end
+end
+
+class Noise < Texture
+  def initialize
+    @perlin = Perlin.new
+  end
+
+  def value(u, v, p) : Color
+    Color.new(1, 1, 1) * @perlin.noise(p)
   end
 end

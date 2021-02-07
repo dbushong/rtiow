@@ -34,12 +34,7 @@ def render(image_width, image_height, samples_per_pixel, max_depth, scene_name)
 
   # World + Scene
   world = HittableList.new
-  scene : Scene = case scene_name
-  when "cover"       then CoverScene.new
-  when "two-spheres" then TwoSpheresScene.new
-  else
-    raise ArgumentError.new("Unknown scene: #{scene_name}; must be one of: #{ValidSceneNames.inspect}")
-  end
+  scene = Scene.create(scene_name)
 
   scene.render_to(world)
 
